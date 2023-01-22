@@ -1,16 +1,22 @@
 import * as Popover from '@radix-ui/react-popover';
 import ProgressBar from '../ProgressBar';
 import clsx from 'clsx';
+import Checkbox from '../Checkbox';
+import dayjs from 'dayjs';
 
 interface HabitDayProps {
   completed?: number;
   amount?: number;
+  date?: Date;
   extraClasses?: React.HTMLAttributes<HTMLDivElement>['className'];
 }
 
-function HabitDay({ completed, amount, extraClasses }: HabitDayProps) {
+function HabitDay({ completed, amount, extraClasses, date }: HabitDayProps) {
   const progress =
     completed && amount ? Math.round((completed / amount) * 100) : 0;
+
+  const dayAndMonth = dayjs(date).format('DD/MM');
+  const dayOfWeek = dayjs(date).format('dddd');
 
   return (
     <Popover.Root>
@@ -31,12 +37,16 @@ function HabitDay({ completed, amount, extraClasses }: HabitDayProps) {
 
       <Popover.Portal>
         <Popover.Content className="min-w-[320px] p-6 rounded-xl bg-zinc-900 flex flex-col">
-          <span className="font-semibold text-zinc-400">quinta-feira</span>
+          <span className="font-semibold text-zinc-400">{dayOfWeek}</span>
           <span className="mt-1 font-extrabold leading-tight text-3xl">
-            19/01
+            {dayAndMonth}
           </span>
 
           <ProgressBar value={progress} />
+
+          <div className="mt-6 flex flex-col gap-3">
+            {/* <Checkbox title="beber agua" extraClasses="font-semibold text-xl" /> */}
+          </div>
           <Popover.Arrow height={8} width={16} className="fill-zinc-900" />
         </Popover.Content>
       </Popover.Portal>
